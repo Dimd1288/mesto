@@ -9,9 +9,15 @@
     background-position: center center;
     cursor: pointer;
     background-size: 22px;
+    transition: opacity .3s;
 }
 
 .profile__add-button:hover {
-    border: 3px solid #FFFFFF;
-    opacity: .7;
+    opacity: .6;
+}
+
+@media screen and (max-width: 768px) {
+    .profile__add-button {
+      width: 100%;  
+    }
 }

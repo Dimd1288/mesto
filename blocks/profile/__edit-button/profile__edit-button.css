@@ -11,10 +11,9 @@
     background-color: #000000;
     margin-bottom: 7px;
     padding: 0;
-    transition: border .3s;
+    transition: opacity .3s;
 }
 
 .profile__edit-button:hover {
-    border: 2px solid #FFFFFF;
-    opacity: .7;
+    opacity: .6;
 }
