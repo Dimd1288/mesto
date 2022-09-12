@@ -1,5 +1,6 @@
 .profile__photo {
-    width: 168.75px;
+    max-width: 168.75px;
+    max-height: 127.5px;
     object-fit: cover;
     border-radius: 50%;
     margin: 0 auto;

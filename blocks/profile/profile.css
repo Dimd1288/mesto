@@ -8,13 +8,13 @@
     gap: 30px;
 }
 
-@media screen and (max-width: 1124px) {
+@media screen and (max-width: 1126px) {
     .profile {
         width: calc(100% - 48px);
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 790px) {
     .profile {
         width: calc(100% - 38px);
         flex-direction: column;
