@@ -12,7 +12,7 @@ let profileEditPopupName = profileEditPopupContainer.querySelector('.popup__inpu
 let profileEditPopupAbout = profileEditPopupContainer.querySelector('.popup__input_type_about');
 
 
-function openEditProfilePopup(){
+function openEditProfilePopup() {
     profileEditPopup.classList.add('popup_opened');
     root.classList.add('root_overflow_hidden')
     let name = profileName.textContent;
@@ -21,16 +21,13 @@ function openEditProfilePopup(){
     profileEditPopupAbout.value = about;
 }
 
-function closeEditProfilePopup(event){
-    const target = event.target;
-    if (!target.closest('.popup__container') || target.closest('.popup__close-icon') || target.closest('.popup__save-button')){
-        profileEditPopup.classList.remove('popup_opened');
-        root.classList.remove('root_overflow_hidden');
-    }
+function closeEditProfilePopup() {
+    profileEditPopup.classList.remove('popup_opened');
+    root.classList.remove('root_overflow_hidden');
 }
 
-function formSubmitHandler (event) {
-    event.preventDefault(); 
+function formSubmitHandler(event) {
+    event.preventDefault();
     let nameFromInput = profileEditPopupName.value;
     let aboutFromInput = profileEditPopupAbout.value;
     profileName.textContent = nameFromInput;
@@ -39,8 +36,7 @@ function formSubmitHandler (event) {
 
 profileEditButton.addEventListener('click', openEditProfilePopup);
 
-profileEditPopup.addEventListener('click', closeEditProfilePopup);
-
 profileEditPopupCloseIcon.addEventListener('click', closeEditProfilePopup);
 
 profileEditPopupForm.addEventListener('submit', formSubmitHandler); 
+profileEditPopupSaveButton.addEventListener('click', closeEditProfilePopup);

@@ -1,13 +1,12 @@
 .popup__close-icon {
     width: 32px;
     height: 32px;
-    top: -40px;
-    left: 438px;
-    position: fixed;
+    transform: translate(239px, -72px);
     background-image: url(../../../images/close-icon.svg);
     background-size: cover;
     cursor: pointer;
     transition: opacity .3s;
+    background-color: #000000;
 }
 
 @media screen and (max-width: 768px) {
