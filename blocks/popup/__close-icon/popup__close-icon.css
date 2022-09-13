@@ -5,11 +5,9 @@
     border: none;
     transform: translate(76px, -42px);
     margin-left: auto;
-    background-image: url(../../../images/close-icon.svg);
-    background-size: cover;
+    background: transparent center/cover url(../../../images/close-icon.svg);
     cursor: pointer;
     transition: opacity .3s;
-    background-color: transparent;
 }
 
 @media screen and (max-width: 768px) {
