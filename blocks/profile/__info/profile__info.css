@@ -10,7 +10,7 @@
     .profile__info {
         max-width: 282px;
         margin: 0 auto;
-        gap: 14px 10px;
+        gap: 10px;
         justify-content: center;
     }
 }

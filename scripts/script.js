@@ -6,7 +6,6 @@ let profileEditButton = document.querySelector('.profile__edit-button');
 let profileEditPopup = document.querySelector('.popup');
 let profileEditPopupContainer = profileEditPopup.querySelector('.popup__container');
 let profileEditPopupForm = profileEditPopupContainer.querySelector('.popup__form');
-let profileEditPopupSaveButton = profileEditPopupContainer.querySelector('.popup__save-button');
 let profileEditPopupCloseIcon = profileEditPopupContainer.querySelector('.popup__close-icon');
 let profileEditPopupName = profileEditPopupContainer.querySelector('.popup__input_type_name');
 let profileEditPopupAbout = profileEditPopupContainer.querySelector('.popup__input_type_about');
@@ -14,24 +13,19 @@ let profileEditPopupAbout = profileEditPopupContainer.querySelector('.popup__inp
 
 function openEditProfilePopup() {
     profileEditPopup.classList.add('popup_opened');
-    root.classList.add('root_overflow_hidden')
-    let name = profileName.textContent;
-    let about = profileAbout.textContent;
-    profileEditPopupName.value = name;
-    profileEditPopupAbout.value = about;
+    profileEditPopupName.value = profileName.textContent;
+    profileEditPopupAbout.value = profileAbout.textContent;
 }
 
 function closeEditProfilePopup() {
     profileEditPopup.classList.remove('popup_opened');
-    root.classList.remove('root_overflow_hidden');
 }
 
 function formSubmitHandler(event) {
     event.preventDefault();
-    let nameFromInput = profileEditPopupName.value;
-    let aboutFromInput = profileEditPopupAbout.value;
-    profileName.textContent = nameFromInput;
-    profileAbout.textContent = aboutFromInput;
+    profileName.textContent = profileEditPopupName.value;
+    profileAbout.textContent = profileEditPopupAbout.value;
+    closeEditProfilePopup();
 }
 
 profileEditButton.addEventListener('click', openEditProfilePopup);
@@ -39,4 +33,3 @@ profileEditButton.addEventListener('click', openEditProfilePopup);
 profileEditPopupCloseIcon.addEventListener('click', closeEditProfilePopup);
 
 profileEditPopupForm.addEventListener('submit', formSubmitHandler); 
-profileEditPopupSaveButton.addEventListener('click', closeEditProfilePopup);

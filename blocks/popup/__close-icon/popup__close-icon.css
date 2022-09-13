@@ -1,19 +1,22 @@
 .popup__close-icon {
     width: 32px;
     height: 32px;
-    transform: translate(239px, -72px);
+    padding: 0;
+    border: none;
+    transform: translate(76px, -42px);
+    margin-left: auto;
     background-image: url(../../../images/close-icon.svg);
     background-size: cover;
     cursor: pointer;
     transition: opacity .3s;
-    background-color: #000000;
+    background-color: transparent;
 }
 
 @media screen and (max-width: 768px) {
     .popup__close-icon {
         width: 20px;
         height: 20px;
-        transform: translate(20px, -64px);
+        transform: translate(22px, -41px);
         margin-left: auto;
     }
 }

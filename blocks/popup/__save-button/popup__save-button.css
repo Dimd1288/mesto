@@ -5,7 +5,8 @@
     max-width: 358px;
     border-radius: 2px;
     box-sizing: border-box;
-    padding: 14px 0 18px;
+    border: none;
+    padding: 14px 0;
     font-size: 18px;
     line-height: 22px;
     text-align: center;
