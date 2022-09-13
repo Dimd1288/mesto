@@ -3,7 +3,7 @@
     height: 19px;
     background: #FFFFFF center center no-repeat url(../../../images/like.svg);
     margin: 0 15px 0 0;
-    cursor:pointer;
+    cursor: pointer;
     border: 0;
     transition: opacity .3s;
 }

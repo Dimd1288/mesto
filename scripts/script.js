@@ -32,4 +32,4 @@ profileEditButton.addEventListener('click', openEditProfilePopup);
 
 profileEditPopupCloseIcon.addEventListener('click', closeEditProfilePopup);
 
-profileEditPopupForm.addEventListener('submit', formSubmitHandler); 
+profileEditPopupForm.addEventListener('submit', formSubmitHandler);
