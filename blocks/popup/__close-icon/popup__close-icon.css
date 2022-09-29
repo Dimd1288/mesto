@@ -3,8 +3,9 @@
     height: 32px;
     padding: 0;
     border: none;
-    transform: translate(76px, -42px);
-    margin-left: auto;
+    position: absolute;
+    top: -40px;
+    right: -40px;
     background: transparent center/cover url(../../../images/close-icon.svg);
     cursor: pointer;
     transition: opacity .3s;
@@ -14,7 +15,8 @@
     .popup__close-icon {
         width: 20px;
         height: 20px;
-        transform: translate(22px, -41px);
+        top: -36px;
+        right: 0;
     }
 }
 

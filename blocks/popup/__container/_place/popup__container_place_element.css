@@ -1,0 +1,12 @@
+.popup__container_place_element {
+    padding: 0;
+    max-width: 100%;
+    background-color: transparent;
+}
+
+@media screen and (max-width: 768px) {
+    .popup__container_place_element {
+        min-width: 240px;
+        max-width: calc(100% - 80px);
+    }
+}

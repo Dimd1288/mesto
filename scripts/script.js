@@ -11,7 +11,6 @@ const profileEditPopupNameInput= profileEditPopupContainer.querySelector('.popup
 const profileEditPopupAboutInput = profileEditPopupContainer.querySelector('.popup__input_type_about');
 const cardsContainer = document.querySelector('.elements__list');
 const cardItem = cardsContainer.querySelector('.element');
-let cardBasketIcon;
 const addPlaceButton = document.querySelector('.profile__add-button');
 const addPlacePopup = document.querySelector('#addPlace');
 const addPlacePopupContainer = addPlacePopup.querySelector('.popup__container');
@@ -81,6 +80,8 @@ function renderCard(card){
     element.querySelector('.element__image').src = card.link;
     element.querySelector('.element__image').alt = card.name;
     element.querySelector('.element__title').textContent = card.name;
+    element.querySelector('.element__popup-image').src = card.link;
+    element.querySelector('.element__popup-caption').textContent = card.name;
     return element; 
 }
 
@@ -89,6 +90,8 @@ function addNewCard(card){
     cardsContainer.prepend(element);
     loadLikeButton(element);
     loadBasketButton(element);
+    loadPlacePopup(element);
+    loadPlaceImage(element);
 }
 
 function loadLikeButton(element){
@@ -99,9 +102,24 @@ function loadLikeButton(element){
 }
 
 function loadBasketButton(element){
-    cardBasketIcon = element.querySelector('.element__basket');
+    const cardBasketIcon = element.querySelector('.element__basket');
     cardBasketIcon.addEventListener('click', (event) => {
       event.target.closest('.element').remove();
+    })
+}
+
+function loadPlaceImage(element){
+  const placeImage = element.querySelector('.element__image');
+  placeImage.addEventListener('click', (event) => {
+    event.target.closest('.element').querySelector('.popup').classList.add('popup_opened');
+  })
+}
+
+function loadPlacePopup(element){
+    const placePopup = element.querySelector('#elementPopup');
+    const closePlacePopupIcon = element.querySelector('.popup__close-icon');
+    closePlacePopupIcon.addEventListener('click', (event) => {
+      event.target.closest('.popup').classList.remove('popup_opened');
     })
 }
 
