@@ -1,6 +1,7 @@
 .popup__container_place_element {
     padding: 0;
-    max-width: 100%;
+    max-width: 75vw;
+    max-height: 75vh;
     background-color: transparent;
 }
 
