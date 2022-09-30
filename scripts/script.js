@@ -98,9 +98,9 @@ function loadPlacePopupOpenListener(element) {
   const placeImage = element.querySelector('.element__image');
   const placeTitle = element.querySelector('.element__title');
   placeImage.addEventListener('click', () => {
-    zoomPlacePopup.querySelector('.element__popup-image').src = placeImage.src;
-    zoomPlacePopup.querySelector('.element__popup-caption').textContent = placeTitle.textContent;
-    zoomPlacePopup.querySelector('.element__popup-image').alt = placeTitle.textContent;
+    zoomPlacePopup.querySelector('.popup__image').src = placeImage.src;
+    zoomPlacePopup.querySelector('.popup__caption').textContent = placeTitle.textContent;
+    zoomPlacePopup.querySelector('.popup__image').alt = placeTitle.textContent;
     openPopup(zoomPlacePopup);
   })
 }
