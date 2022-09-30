@@ -20,6 +20,8 @@ const addPlacePopupCloseIcon = addPlacePopupContainer.querySelector('.popup__clo
 const addPlacePopupTitleInput = addPlacePopupContainer.querySelector('.popup__input_type_title');
 const addPlacePopupLinkInput = addPlacePopupContainer.querySelector('.popup__input_type_link');
 const zoomPlacePopup = document.querySelector('#element-popup');
+const popupImage = zoomPlacePopup.querySelector('.popup__image');
+const popupCaption = zoomPlacePopup.querySelector('.popup__caption');
 const closeZoomPlacePopupIcon = zoomPlacePopup.querySelector('.popup__close-icon');
 
 fillPageWithInitialCards();
@@ -63,7 +65,7 @@ function formSubmitHandler(event) {
   closeEditProfilePopup();
 }
 
-function renderCard(card) {
+function createCard(card) {
   const elementTemplate = cardsContainer.querySelector('#element').content;
   const element = elementTemplate.querySelector('.element').cloneNode(true);
   element.querySelector('.element__image').src = card.link;
@@ -73,7 +75,7 @@ function renderCard(card) {
 }
 
 function addNewCard(card) {
-  const element = renderCard(card);
+  const element = createCard(card);
   cardsContainer.prepend(element);
   loadLikeButtonClickListener(element);
   loadBasketButtonClickListener(element);
@@ -98,9 +100,9 @@ function loadPlacePopupOpenListener(element) {
   const placeImage = element.querySelector('.element__image');
   const placeTitle = element.querySelector('.element__title');
   placeImage.addEventListener('click', () => {
-    zoomPlacePopup.querySelector('.popup__image').src = placeImage.src;
-    zoomPlacePopup.querySelector('.popup__caption').textContent = placeTitle.textContent;
-    zoomPlacePopup.querySelector('.popup__image').alt = placeTitle.textContent;
+    popupImage.src = placeImage.src;
+    popupCaption.textContent = placeTitle.textContent;
+    popupImage.alt = placeTitle.textContent;
     openPopup(zoomPlacePopup);
   })
 }
