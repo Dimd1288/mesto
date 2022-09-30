@@ -34,15 +34,6 @@
                             <button type="button" class="element__basket"></button>
                             <h2 class="element__title"></h2>
                             <button type="button" class="element__like"></button>
-                            <div class="popup" id="elementPopup">
-                                <div class="popup__container popup__container_place_element">
-                                    <button type="button" class="popup__close-icon"></button>
-                                    <figure class="popup__figure">
-                                        <img alt="title" class="element__popup-image">
-                                        <figcaption class="element__popup-caption"></figcaption>
-                                    </figure>
-                                </div>
-                            </div>
                         </li>
                     </template>
                 </ul>
@@ -52,7 +43,7 @@
             <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
         </footer>
     </div>
-    <div class="popup" id="editProfile">
+    <div class="popup" id="edit-profile">
         <div class="popup__container">
             <button type="button" class="popup__close-icon"></button>
             <h2 class="popup__title">Редактировать профиль</h2>
@@ -63,19 +54,29 @@
             </form>
         </div>
     </div>
-    <div class="popup" id="addPlace">
+    <div class="popup" id="add-place">
         <div class="popup__container">
             <button type="button" class="popup__close-icon"></button>
             <h2 class="popup__title">Новое место</h2>
             <form name="addPlaceForm" action="hhtps://server.serve" method="post" class="popup__form">
                 <input type="text" name="name" placeholder="Название" class="popup__input popup__input_type_title">
-                <input type="text" name="about" placeholder="Ссылка на картинку"
+                <input type="url" name="about" placeholder="Ссылка на картинку"
                     class="popup__input popup__input_type_link">
                 <button type="submit" class="popup__save-button">Создать</button>
             </form>
         </div>
     </div>
-    <script src="./scripts/script.js"></script>
+    <div class="popup" id="element-popup">
+        <div class="popup__container popup__container_place_element">
+            <button type="button" class="popup__close-icon"></button>
+            <figure class="popup__figure">
+                <img alt="title" class="element__popup-image">
+                <figcaption class="element__popup-caption"></figcaption>
+            </figure>
+        </div>
+    </div>
+    <script defer src="./scripts/initial-cards.js"></script>
+    <script defer src="./scripts/script.js"></script>
 </body>
 
 </html>
