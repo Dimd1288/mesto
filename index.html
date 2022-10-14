@@ -47,9 +47,17 @@
         <div class="popup__container">
             <button type="button" class="popup__close-icon"></button>
             <h2 class="popup__title">Редактировать профиль</h2>
-            <form name="editProfileForm" action="hhtps://server.serve" method="post" class="popup__form">
-                <input type="text" name="name" placeholder="Имя" class="popup__input popup__input_type_name">
-                <input type="text" name="about" placeholder="О себе" class="popup__input popup__input_type_about">
+            <form name="editProfileForm" action="hhtps://server.serve" method="post" class="popup__form" novalidate>
+                <div class="popup__input-container">
+                    <input type="text" name="name" placeholder="Имя" class="popup__input" id="name-input" minlength="2"
+                        maxlength="40" required>
+                    <span class="popup__error name-input-error"></span>
+                </div>
+                <div class="popup__input-container">
+                    <input type="text" name="about" placeholder="О себе" class="popup__input" id="about-input"
+                        minlength="2" maxlength="200" required>
+                    <span class="popup__error about-input-error"></span>
+                </div>
                 <button type="submit" class="popup__save-button">Сохранить</button>
             </form>
         </div>
@@ -58,10 +66,17 @@
         <div class="popup__container">
             <button type="button" class="popup__close-icon"></button>
             <h2 class="popup__title">Новое место</h2>
-            <form name="addPlaceForm" action="hhtps://server.serve" method="post" class="popup__form">
-                <input type="text" name="name" placeholder="Название" class="popup__input popup__input_type_title">
-                <input type="url" name="about" placeholder="Ссылка на картинку"
-                    class="popup__input popup__input_type_link">
+            <form name="addPlaceForm" action="hhtps://server.serve" method="post" class="popup__form" novalidate>
+                <div class="popup__input-container">
+                    <input type="text" name="title" placeholder="Название" class="popup__input" id="title-input"
+                        minlength="2" maxlength="30" required>
+                    <span class="popup__error title-input-error"></span>
+                </div>
+                <div class="popup__input-container">
+                    <input type="url" name="link" placeholder="Ссылка на картинку" class="popup__input" id="link-input"
+                        required>
+                    <span class="popup__error link-input-error"></span>
+                </div>
                 <button type="submit" class="popup__save-button">Создать</button>
             </form>
         </div>
@@ -77,6 +92,7 @@
     </div>
     <script defer src="./scripts/initial-cards.js"></script>
     <script defer src="./scripts/script.js"></script>
+    <script defer src="./scripts/validation.js"></script>
 </body>
 
 </html>
