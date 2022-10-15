@@ -24,6 +24,6 @@
     }
 }
 
-.popup__save-button:hover {
+.popup__save-button:hover:not(.popup__save-button_disabled) {
     opacity: .8;
 }

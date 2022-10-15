@@ -26,27 +26,72 @@ const closeZoomPlacePopupIcon = zoomPlacePopup.querySelector('.popup__close-icon
 
 fillPageWithInitialCards();
 
-function openPopup(popup){
-  popup.classList.add('popup_opened');
+function openPopup(popupElement) {
+  popupElement.classList.add('popup_opened');
 }
 
-function closePopup(popup){
-  popup.classList.remove('popup_opened');
-  const formElement = popup.querySelector('.popup__form');
-  const inputsList = Array.from(formElement.querySelectorAll('.popup__input'));
-  inputsList.forEach((inputElement) => {
-    hideError(formElement, inputElement);
-  });
+function closePopup(popupElement) {
+  popupElement.classList.remove('popup_opened');
+  clearErrors(popupElement);
 }
+
+function clearErrors(popupElement) {
+  if (!popupElement.contains(popupElement.querySelector('.popup__form'))) {
+    return;
+  }
+  const formElement = popupElement.querySelector('.popup__form');
+  const inputsList = Array.from(formElement.querySelectorAll('.popup__input'));
+  if (!formElement.closest('.popup_opened')) {
+    inputsList.forEach((inputElement) => {
+      hideError(formElement, inputElement);
+    })
+  }
+
+}
+
+function addCloseIconListener() {
+  const popupsList = Array.from(document.querySelectorAll('.popup'));
+  popupsList.forEach((popupElement) => {
+    const closeIcon = popupElement.querySelector('.popup__close-icon');
+    closeIcon.addEventListener('click', () => {
+      closePopup(popupElement);
+    })
+  })
+}
+
+function addCloseOutOfPopupListener() {
+  const popupsList = Array.from(document.querySelectorAll('.popup'));
+  popupsList.forEach((popupElement) => {
+    popupElement.addEventListener('click', (evt) => {
+      if (!evt.target.closest('.popup__container')) {
+        closePopup(popupElement);
+      }
+    })
+  })
+}
+
+function addEscapeKeyDownListener() {
+  const popupsList = Array.from(document.querySelectorAll('.popup'));
+  popupsList.forEach((popupElement) => {
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape') {
+        closePopup(popupElement);
+      }
+    })
+  })
+}
+
+function enableClosePopupListeners() {
+  addCloseOutOfPopupListener();
+  addCloseIconListener();
+  addEscapeKeyDownListener();
+}
+
 
 function openEditProfilePopup() {
   openPopup(profileEditPopup);
   profileEditPopupNameInput.value = profileName.textContent;
   profileEditPopupAboutInput.value = profileAbout.textContent;
-}
-
-function closeEditProfilePopup() {
-  closePopup(profileEditPopup);
 }
 
 function openAddPlacePopup() {
@@ -55,19 +100,11 @@ function openAddPlacePopup() {
   openPopup(addPlacePopup);
 }
 
-function closeAddPlacePopup() {
-  closePopup(addPlacePopup);
-}
-
-function closeZoomPlacePopup() {
-  closePopup(zoomPlacePopup);
-}
-
 function formSubmitHandler(event) {
   event.preventDefault();
   profileName.textContent = profileEditPopupNameInput.value;
   profileAbout.textContent = profileEditPopupAboutInput.value;
-  closeEditProfilePopup();
+  closePopup(profileEditPopup);
 }
 
 function createCard(card) {
@@ -122,65 +159,15 @@ function addPlaceFormSubmitHandler(event) {
   cardObject.name = addPlacePopupTitleInput.value;
   cardObject.link = addPlacePopupLinkInput.value;
   addNewCard(cardObject);
-  closeAddPlacePopup();
+  closePopup(addPlacePopup);
 }
+
+enableClosePopupListeners();
 
 profileEditButton.addEventListener('click', openEditProfilePopup);
 
-profileEditPopupCloseIcon.addEventListener('click', closeEditProfilePopup);
-
 addPlaceButton.addEventListener('click', openAddPlacePopup);
-
-addPlacePopupCloseIcon.addEventListener('click', closeAddPlacePopup);
 
 profileEditPopupForm.addEventListener('submit', formSubmitHandler);
 
 addPlacePopupForm.addEventListener('submit', addPlaceFormSubmitHandler);
-
-closeZoomPlacePopupIcon.addEventListener('click', closeZoomPlacePopup);
-
-// Отсюда начинаем валидацию
-
-function validateInput(formElement, inputElement) {
-  if (!inputElement.validity.valid) {
-    showError(formElement, inputElement);
-  } else {
-    hideError(formElement, inputElement);
-  }
-}
-
-function showError(formElement, inputElement) {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add('popup__input_type_error');
-  errorElement.textContent = inputElement.validationMessage;
-  errorElement.classList.add('popup__error_visible');
-};
-
-function hideError(formElement, inputElement) {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove('popup__input_type_error');
-  errorElement.classList.remove('popup__error_visible');
-  errorElement.textContent = '';
-}
-
-
-function addInputListeners(formElement) {
-  const inputsList = Array.from(formElement.querySelectorAll('.popup__input'));
-  inputsList.forEach((inputElement) => {
-    inputElement.addEventListener('input', () => {
-      validateInput(formElement, inputElement);
-    })
-  })
-}
-
-function enableValidation() {
-  const formsList = Array.from(document.querySelectorAll('.popup__form'));
-  formsList.forEach((formElement) => {
-    formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault();
-    })
-    addInputListeners(formElement);
-  })
-}
-
-enableValidation();
