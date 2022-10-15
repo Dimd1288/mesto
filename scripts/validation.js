@@ -1,57 +1,43 @@
-let formSelector;
-let inputSelector;
-let submitButtonSelector;
-let inactiveButtonClass;
-let inputErrorClass;
-let errorClass;
-
-function validateInput(formElement, inputElement) {
+function validateInput(formElement, inputElement, params) {
     if (!inputElement.validity.valid) {
-        showError(formElement, inputElement);
+        showError(formElement, inputElement, params);
     } else {
-        hideError(formElement, inputElement);
+        hideError(formElement, inputElement, params);
     }
 }
 
-function showError(formElement, inputElement) {
+function showError(formElement, inputElement, params) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-    inputElement.classList.add(inputErrorClass);
+    inputElement.classList.add(params.inputErrorClass);
     errorElement.textContent = inputElement.validationMessage;
-    errorElement.classList.add(errorClass);
+    errorElement.classList.add(params.errorClass);
 };
 
-function hideError(formElement, inputElement) {
+function hideError(formElement, inputElement, params) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-    inputElement.classList.remove(inputErrorClass);
-    errorElement.classList.remove(errorClass);
+    inputElement.classList.remove(params.inputErrorClass);
+    errorElement.classList.remove(params.errorClass);
     errorElement.textContent = '';
 }
 
 
-function addInputListeners(formElement) {
-    const inputsList = Array.from(formElement.querySelectorAll(inputSelector));
-    toggleButtonState(formElement);
+function addInputListeners(formElement, params) {
+    const inputsList = Array.from(formElement.querySelectorAll(params.inputSelector));
+    toggleButtonState(formElement, params);
     inputsList.forEach((inputElement) => {
         inputElement.addEventListener('input', () => {
-            validateInput(formElement, inputElement);
-            toggleButtonState(formElement);
+            validateInput(formElement, inputElement, params);
+            toggleButtonState(formElement, params);
         })
     })
 }
 
 function enableValidation(params) {
-    formSelector = params.formSelector;
-    inputSelector = params.inputSelector;
-    submitButtonSelector = params.submitButtonSelector;
-    inactiveButtonClass = params.inactiveButtonClass;
-    inputErrorClass = params.inputErrorClass;
+    const formSelector = params.formSelector;
     errorClass = params.errorClass;
     const formsList = Array.from(document.querySelectorAll(formSelector));
     formsList.forEach((formElement) => {
-        formElement.addEventListener('submit', (evt) => {
-            evt.preventDefault();
-        })
-        addInputListeners(formElement);
+        addInputListeners(formElement, params);
     })
 }
 
@@ -61,17 +47,30 @@ function isFormValid(inputsList) {
     })
 }
 
-function toggleButtonState(formElement) {
-    const inputsList = Array.from(formElement.querySelectorAll(inputSelector));
-    const buttonElement = formElement.querySelector(submitButtonSelector);
+function toggleButtonState(formElement, params) {
+    const inputsList = Array.from(formElement.querySelectorAll(params.inputSelector));
+    const buttonElement = formElement.querySelector(params.submitButtonSelector);
     if (!isFormValid(inputsList)) {
-        buttonElement.classList.add(inactiveButtonClass);
+        buttonElement.classList.add(params.inactiveButtonClass);
         buttonElement.setAttribute('disabled', true)
     } else {
-        buttonElement.classList.remove(inactiveButtonClass);
+        buttonElement.classList.remove(params.inactiveButtonClass);
         buttonElement.removeAttribute('disabled');
     }
 }
+
+function clearErrors(popupElement, params) {
+    if (!popupElement.contains(popupElement.querySelector('.popup__form'))) {
+      return;
+    }
+    const formElement = popupElement.querySelector('.popup__form');
+    const inputsList = Array.from(formElement.querySelectorAll('.popup__input'));
+    if (!formElement.closest('.popup_opened')) {
+      inputsList.forEach((inputElement) => {
+        hideError(formElement, inputElement, params);
+      })
+    }
+  }
 
 enableValidation({
     formSelector: '.popup__form',
