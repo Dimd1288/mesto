@@ -1,3 +1,20 @@
 .popup__input-container {
-   min-height: 60px;     
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    max-width: 358px;
+    min-width: 358px;
+    align-self: flex-start;     
+}
+
+@media screen and (max-width: 450px) {
+    .popup__input-container {
+        min-width: 300px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .popup__input-container {
+        min-width: 238px;
+    }
 }
