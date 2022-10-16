@@ -20,10 +20,10 @@ const placeAddPopupForm = placeAddPopupContainer.querySelector('.popup__form');
 const placeAddPopupCloseIcon = placeAddPopupContainer.querySelector('.popup__close-icon');
 const placeAddPopupTitleInput = placeAddPopupContainer.querySelector('#title-input');
 const placeAddPopupLinkInput = placeAddPopupContainer.querySelector('#link-input');
-const zoomPlacePopup = document.querySelector('#element-popup');
-const popupImage = zoomPlacePopup.querySelector('.popup__image');
-const popupCaption = zoomPlacePopup.querySelector('.popup__caption');
-const closeZoomPlacePopupIcon = zoomPlacePopup.querySelector('.popup__close-icon');
+const placeZoomPopup = document.querySelector('#element-popup');
+const popupImage = placeZoomPopup.querySelector('.popup__image');
+const popupCaption = placeZoomPopup.querySelector('.popup__caption');
+const placeZoomPopupCloseIcon = placeZoomPopup.querySelector('.popup__close-icon');
 const popupsList = Array.from(document.querySelectorAll('.popup'));
 const placeAddsubmitButton = placeAddPopup.querySelector('.popup__save-button');
 
@@ -84,17 +84,12 @@ function openAddPlacePopup() {
   openPopup(placeAddPopup);
 }
 
-function disableSubmitButton(buttonElement) {
-  buttonElement.classList.add('popup__save-button_disabled');
-  buttonElement.setAttribute('disabled', true);
-}
-
 function handleSubmitForm(event) {
   event.preventDefault();
   profileName.textContent = profileEditPopupNameInput.value;
   profileAbout.textContent = profileEditPopupAboutInput.value;
   closePopup(profileEditPopup);
-  disableSubmitButton(profileEditSubmitButton);
+  disableSubmitButton(profileEditSubmitButton, 'popup__save-button_disabled');
 }
 
 function createCard(card) {
@@ -135,7 +130,7 @@ function loadPlacePopupOpenListener(element) {
     popupImage.src = placeImage.src;
     popupCaption.textContent = placeTitle.textContent;
     popupImage.alt = placeTitle.textContent;
-    openPopup(zoomPlacePopup);
+    openPopup(placeZoomPopup);
   })
 }
 
@@ -150,7 +145,7 @@ function handleSubmitAddPlaceForm(event) {
   cardObject.link = placeAddPopupLinkInput.value;
   addNewCard(cardObject);
   closePopup(placeAddPopup);
-  disableSubmitButton(placeAddsubmitButton);
+  disableSubmitButton(placeAddsubmitButton, 'popup__save-button_disabled');
 }
 
 enableClosePopupListeners();

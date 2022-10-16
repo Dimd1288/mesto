@@ -51,12 +51,20 @@ function toggleButtonState(formElement, params) {
     const inputsList = Array.from(formElement.querySelectorAll(params.inputSelector));
     const buttonElement = formElement.querySelector(params.submitButtonSelector);
     if (!isFormValid(inputsList)) {
-        buttonElement.classList.add(params.inactiveButtonClass);
-        buttonElement.setAttribute('disabled', true)
+        disableSubmitButton(buttonElement, params.inactiveButtonClass);
     } else {
-        buttonElement.classList.remove(params.inactiveButtonClass);
-        buttonElement.removeAttribute('disabled');
+        enableSubmitButton(buttonElement, params.inactiveButtonClass);
     }
+}
+
+function disableSubmitButton(buttonElement, inactiveButtonClass) {
+    buttonElement.classList.add(inactiveButtonClass);
+    buttonElement.setAttribute('disabled', true);
+}
+
+function enableSubmitButton(buttonElement, inactiveButtonClass) {
+    buttonElement.classList.remove(inactiveButtonClass);
+    buttonElement.removeAttribute('disabled', true);
 }
 
 function clearErrors(popupElement, params) {
