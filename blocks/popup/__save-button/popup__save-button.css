@@ -12,7 +12,7 @@
     text-align: center;
     transition: opacity .3s;
     cursor: pointer;
-    margin-top: 18px;
+    margin-top: 15px;
 }
 
 @media screen and (max-width: 450px) {
