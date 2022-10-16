@@ -41,49 +41,52 @@ function closePopup(popupElement) {
   document.removeEventListener('keydown', closeByEscape);
 }
 
-function addCloseIconListener() {
-  popupsList.forEach((popupElement) => {
-    const closeIcon = popupElement.querySelector('.popup__close-icon');
-    closeIcon.addEventListener('click', () => {
-      closePopup(popupElement);
-    })
-  })
-}
-
-function addCloseOutOfPopupListener() {
-  popupsList.forEach((popupElement) => {
-    popupElement.addEventListener('click', (evt) => {
-      if (!evt.target.closest('.popup__container')) {
-        closePopup(popupElement);
-      }
-    })
-  })
-}
-
-
 function closeByEscape(evt) {
-  if (evt.key === 'Escape'){
+  if (evt.key === 'Escape') {
     const openedPopup = document.querySelector('.popup_opened');
     closePopup(openedPopup);
   }
 }
 
 function enableClosePopupListeners() {
-  addCloseOutOfPopupListener();
-  addCloseIconListener();
+  popupsList.forEach((popupElement) => {
+    popupElement.addEventListener('mousedown', (evt) => {
+      if (evt.target.classList.contains('popup_opened')) {
+        closePopup(popupElement);
+      }
+      if (evt.target.classList.contains('popup__close-icon')) {
+        closePopup(popupElement);
+      }
+    })
+  })
 }
 
-
 function openEditProfilePopup() {
+  clearErrors(profileEditPopup, {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+  });
   openPopup(profileEditPopup);
   profileEditPopupNameInput.value = profileName.textContent;
   profileEditPopupAboutInput.value = profileAbout.textContent;
 }
 
 function openAddPlacePopup() {
-  placeAddPopupLinkInput.value = '';
-  placeAddPopupTitleInput.value = '';
+  clearErrors(placeAddPopup, {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+  });
+  placeAddPopupForm.reset()
   openPopup(placeAddPopup);
+}
+
+function disableSubmitButton(buttonElement) {
+  buttonElement.classList.add('popup__save-button_disabled');
+  buttonElement.setAttribute('disabled', true);
 }
 
 function handleSubmitForm(event) {
@@ -138,16 +141,6 @@ function loadPlacePopupOpenListener(element) {
 
 function fillPageWithInitialCards() {
   initialCards.forEach(addNewCard);
-}
-
-function disableSubmitButton(buttonElement) {
-  buttonElement.classList.add('popup__save-button_disabled');
-  buttonElement.setAttribute('disabled', true);
-}
-
-function enableSubmitButton(buttonElement) {
-  buttonElement.classList.remove('popup__save-button_disabled');
-  buttonElement.removeAttribute('disabled', true);
 }
 
 function handleSubmitAddPlaceForm(event) {

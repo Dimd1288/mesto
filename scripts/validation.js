@@ -60,17 +60,12 @@ function toggleButtonState(formElement, params) {
 }
 
 function clearErrors(popupElement, params) {
-    if (!popupElement.contains(popupElement.querySelector('.popup__form'))) {
-      return;
-    }
-    const formElement = popupElement.querySelector('.popup__form');
-    const inputsList = Array.from(formElement.querySelectorAll('.popup__input'));
-    if (!formElement.closest('.popup_opened')) {
-      inputsList.forEach((inputElement) => {
+    const formElement = popupElement.querySelector(params.formSelector);
+    const inputsList = Array.from(formElement.querySelectorAll(params.inputSelector));
+    inputsList.forEach((inputElement) => {
         hideError(formElement, inputElement, params);
-      })
-    }
-  }
+    })
+}
 
 enableValidation({
     formSelector: '.popup__form',
