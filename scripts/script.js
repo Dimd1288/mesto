@@ -1,4 +1,5 @@
-import {Card} from "../scripts/Card.js";
+import { Card } from "../scripts/Card.js";
+import { FormValidator } from "./FormValidator.js";
 
 const initialCards = [
   {
@@ -27,6 +28,15 @@ const initialCards = [
   }
 ];
 
+const validationParameters = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save-button',
+  inactiveButtonClass: 'popup__save-button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+};
+
 const cardsContainer = document.querySelector('.elements__list');
 const profile = document.querySelector('.profile');
 const profileName = profile.querySelector('.profile__name');
@@ -37,7 +47,6 @@ const profileEditPopupContainer = profileEditPopup.querySelector('.popup__contai
 const profileEditPopupForm = profileEditPopupContainer.querySelector('.popup__form');
 const profileEditPopupNameInput = profileEditPopupContainer.querySelector('#name-input');
 const profileEditPopupAboutInput = profileEditPopupContainer.querySelector('#about-input');
-const profileEditSubmitButton = profileEditPopup.querySelector('.popup__save-button');
 const placeAddButton = document.querySelector('.profile__add-button');
 const placeAddPopup = document.querySelector('#add-place');
 const placeAddPopupContainer = placeAddPopup.querySelector('.popup__container');
@@ -48,7 +57,7 @@ const placeZoomPopup = document.querySelector('#element-popup');
 const popupImage = placeZoomPopup.querySelector('.popup__image');
 const popupCaption = placeZoomPopup.querySelector('.popup__caption');
 const popupsList = Array.from(document.querySelectorAll('.popup'));
-const placeAddsubmitButton = placeAddPopup.querySelector('.popup__save-button');
+const formsListArray = Array.from(document.querySelectorAll('.popup__form'));
 
 function openPopup(popupElement) {
   popupElement.classList.add('popup_opened');
@@ -81,24 +90,16 @@ function enableClosePopupListeners() {
 }
 
 function openEditProfilePopup() {
-  clearErrors(profileEditPopup, {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible'
-  });
+  const formValidator = new FormValidator(validationParameters, profileEditPopupForm);
+  formValidator.clearErrors(profileEditPopup);
   openPopup(profileEditPopup);
   profileEditPopupNameInput.value = profileName.textContent;
   profileEditPopupAboutInput.value = profileAbout.textContent;
 }
 
 function openAddPlacePopup() {
-  clearErrors(placeAddPopup, {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible'
-  });
+  const formValidator = new FormValidator(validationParameters, placeAddPopupForm);
+  formValidator.clearErrors();
   placeAddPopupForm.reset()
   openPopup(placeAddPopup);
 }
@@ -108,7 +109,8 @@ function handleSubmitForm(event) {
   profileName.textContent = profileEditPopupNameInput.value;
   profileAbout.textContent = profileEditPopupAboutInput.value;
   closePopup(profileEditPopup);
-  disableSubmitButton(profileEditSubmitButton, 'popup__save-button_disabled');
+  const formValidator = new FormValidator(validationParameters, profileEditPopupForm);
+  formValidator.disableSubmitButton();
 }
 
 initialCards.forEach((cardElement) => {
@@ -124,10 +126,16 @@ function handleSubmitAddPlaceForm(event) {
   const card = new Card(cardObject, "#element");
   cardsContainer.prepend(card.generateCard());
   closePopup(placeAddPopup);
-  disableSubmitButton(placeAddsubmitButton, 'popup__save-button_disabled');
+  const formValidator = new FormValidator(validationParameters, placeAddPopupForm);
+  formValidator.disableSubmitButton();
 }
 
 enableClosePopupListeners();
+
+formsListArray.forEach((formElement) => {
+  const formValidator = new FormValidator(validationParameters, formElement);
+  formValidator.enableValidation();
+})
 
 profileEditButton.addEventListener('click', openEditProfilePopup);
 
@@ -138,4 +146,4 @@ profileEditPopupForm.addEventListener('submit', handleSubmitForm);
 placeAddPopupForm.addEventListener('submit', handleSubmitAddPlaceForm);
 
 
-export {placeZoomPopup, popupImage, popupCaption, openPopup}
+export { placeZoomPopup, popupImage, popupCaption, openPopup }

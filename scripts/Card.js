@@ -1,4 +1,4 @@
-import {placeZoomPopup, popupImage, popupCaption,openPopup} from '../scripts/script.js';
+import { placeZoomPopup, popupImage, popupCaption, openPopup } from '../scripts/script.js';
 class Card {
     constructor(data, templateElement) {
         this._data = data;
@@ -11,7 +11,7 @@ class Card {
             .content
             .querySelector('.element')
             .cloneNode(true);
-        this._element = cardElement;    
+        this._element = cardElement;
     }
 
     generateCard() {
@@ -22,11 +22,11 @@ class Card {
         return this._element;
     }
 
-    _setEventListeners(){
+    _setEventListeners() {
         this._element.querySelector('.element__like').addEventListener('click', (evt) => {
             evt.target.classList.toggle('element__like_active');
         });
-        this._element.querySelector('.element__basket').addEventListener('click', () =>{
+        this._element.querySelector('.element__basket').addEventListener('click', () => {
             this._element.remove();
         });
         this._element.querySelector('.element__image').addEventListener('click', () => {
@@ -38,4 +38,4 @@ class Card {
     }
 }
 
-export {Card}
+export { Card }
