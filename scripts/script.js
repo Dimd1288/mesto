@@ -109,8 +109,6 @@ function handleSubmitForm(event) {
   profileName.textContent = profileEditPopupNameInput.value;
   profileAbout.textContent = profileEditPopupAboutInput.value;
   closePopup(profileEditPopup);
-  const formValidator = new FormValidator(validationParameters, profileEditPopupForm);
-  formValidator.disableSubmitButton();
 }
 
 initialCards.forEach((cardElement) => {
@@ -126,8 +124,6 @@ function handleSubmitAddPlaceForm(event) {
   const card = new Card(cardObject, "#element");
   cardsContainer.prepend(card.generateCard());
   closePopup(placeAddPopup);
-  const formValidator = new FormValidator(validationParameters, placeAddPopupForm);
-  formValidator.disableSubmitButton();
 }
 
 enableClosePopupListeners();
