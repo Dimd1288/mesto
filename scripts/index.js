@@ -1,4 +1,4 @@
-import { Card } from "../scripts/Card.js";
+import { Card } from "./Card.js";
 import { FormValidator } from "./FormValidator.js";
 
 const initialCards = [
@@ -58,6 +58,8 @@ const popupImage = placeZoomPopup.querySelector('.popup__image');
 const popupCaption = placeZoomPopup.querySelector('.popup__caption');
 const popupsList = Array.from(document.querySelectorAll('.popup'));
 const formsListArray = Array.from(document.querySelectorAll('.popup__form'));
+const profileEditFormValidator = new FormValidator(validationParameters, profileEditPopupForm);
+const placeAddFormValidator = new FormValidator(validationParameters, placeAddPopupForm);
 
 function openPopup(popupElement) {
   popupElement.classList.add('popup_opened');
@@ -79,10 +81,7 @@ function closeByEscape(evt) {
 function enableClosePopupListeners() {
   popupsList.forEach((popupElement) => {
     popupElement.addEventListener('mousedown', (evt) => {
-      if (evt.target.classList.contains('popup_opened')) {
-        closePopup(popupElement);
-      }
-      if (evt.target.classList.contains('popup__close-icon')) {
+      if (evt.target.classList.contains('popup_opened') || evt.target.classList.contains('popup__close-icon')) {
         closePopup(popupElement);
       }
     })
@@ -90,18 +89,23 @@ function enableClosePopupListeners() {
 }
 
 function openEditProfilePopup() {
-  const formValidator = new FormValidator(validationParameters, profileEditPopupForm);
-  formValidator.clearErrors(profileEditPopup);
+  profileEditFormValidator.clearErrors();
   openPopup(profileEditPopup);
   profileEditPopupNameInput.value = profileName.textContent;
   profileEditPopupAboutInput.value = profileAbout.textContent;
 }
 
 function openAddPlacePopup() {
-  const formValidator = new FormValidator(validationParameters, placeAddPopupForm);
-  formValidator.clearErrors();
+  placeAddFormValidator.clearErrors();
   placeAddPopupForm.reset()
   openPopup(placeAddPopup);
+}
+
+function handleOpenCard(name, link){
+  popupImage.src = link;
+  popupImage.alt = name;
+  popupCaption.textContent = name;
+  openPopup(placeZoomPopup);
 }
 
 function handleSubmitForm(event) {
@@ -112,7 +116,7 @@ function handleSubmitForm(event) {
 }
 
 initialCards.forEach((cardElement) => {
-  const card = new Card(cardElement, "#element");
+  const card = new Card(cardElement, "#element", handleOpenCard);
   cardsContainer.prepend(card.generateCard());
 })
 
@@ -121,7 +125,7 @@ function handleSubmitAddPlaceForm(event) {
   const cardObject = {};
   cardObject.name = placeAddPopupTitleInput.value;
   cardObject.link = placeAddPopupLinkInput.value;
-  const card = new Card(cardObject, "#element");
+  const card = new Card(cardObject, "#element", handleOpenCard);
   cardsContainer.prepend(card.generateCard());
   closePopup(placeAddPopup);
 }
