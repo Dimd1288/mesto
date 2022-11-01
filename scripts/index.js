@@ -57,7 +57,6 @@ const placeZoomPopup = document.querySelector('#element-popup');
 const popupImage = placeZoomPopup.querySelector('.popup__image');
 const popupCaption = placeZoomPopup.querySelector('.popup__caption');
 const popupsList = Array.from(document.querySelectorAll('.popup'));
-const formsListArray = Array.from(document.querySelectorAll('.popup__form'));
 const profileEditFormValidator = new FormValidator(validationParameters, profileEditPopupForm);
 const placeAddFormValidator = new FormValidator(validationParameters, placeAddPopupForm);
 
@@ -132,10 +131,9 @@ function handleSubmitAddPlaceForm(event) {
 
 enableClosePopupListeners();
 
-formsListArray.forEach((formElement) => {
-  const formValidator = new FormValidator(validationParameters, formElement);
-  formValidator.enableValidation();
-})
+profileEditFormValidator.enableValidation();
+
+placeAddFormValidator.enableValidation();
 
 profileEditButton.addEventListener('click', openEditProfilePopup);
 
