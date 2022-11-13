@@ -1,5 +1,6 @@
 import { Card } from "./Card.js";
 import { FormValidator } from "./FormValidator.js";
+import PopupWithImage from "./PopupWithImage.js";
 import Section from "./Section.js";
 
 const initialCards = [
@@ -61,6 +62,7 @@ const popupCaption = placeZoomPopup.querySelector('.popup__caption');
 const popupsList = Array.from(document.querySelectorAll('.popup'));
 const profileEditFormValidator = new FormValidator(validationParameters, profileEditPopupForm);
 const placeAddFormValidator = new FormValidator(validationParameters, placeAddPopupForm);
+const popupWithImage = new PopupWithImage('#element-popup');
 const cardList = new Section({items: initialCards, renderer: (item) => {
   const card = new Card(item, "#element", handleOpenCard);
   const cardElement = card.generateCard();
@@ -69,12 +71,12 @@ const cardList = new Section({items: initialCards, renderer: (item) => {
 
 function openPopup(popupElement) {
   popupElement.classList.add('popup_opened');
-  document.addEventListener('keydown', closeByEscape);
+  // document.addEventListener('keydown', closeByEscape);
 }
 
 function closePopup(popupElement) {
   popupElement.classList.remove('popup_opened');
-  document.removeEventListener('keydown', closeByEscape);
+  // document.removeEventListener('keydown', closeByEscape);
 }
 
 function closeByEscape(evt) {
@@ -107,11 +109,8 @@ function openAddPlacePopup() {
   openPopup(placeAddPopup);
 }
 
-function handleOpenCard(name, link){
-  popupImage.src = link;
-  popupImage.alt = name;
-  popupCaption.textContent = name;
-  openPopup(placeZoomPopup);
+function handleOpenCard(image, title) {
+ popupWithImage.open(image, title);
 }
 
 function handleSubmitForm(event) {
@@ -131,7 +130,8 @@ function handleSubmitAddPlaceForm(event) {
   closePopup(placeAddPopup);
 }
 
-enableClosePopupListeners();
+// enableClosePopupListeners();
+popupWithImage.setEventListeners();
 cardList.renderItems();
 
 profileEditFormValidator.enableValidation();
