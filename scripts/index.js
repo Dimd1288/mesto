@@ -1,5 +1,6 @@
 import { Card } from "./Card.js";
 import { FormValidator } from "./FormValidator.js";
+import Section from "./Section.js";
 
 const initialCards = [
   {
@@ -38,6 +39,7 @@ const validationParameters = {
 };
 
 const cardsContainer = document.querySelector('.elements__list');
+const cardListSelector = '.elements__list';
 const profile = document.querySelector('.profile');
 const profileName = profile.querySelector('.profile__name');
 const profileAbout = profile.querySelector('.profile__about');
@@ -59,6 +61,11 @@ const popupCaption = placeZoomPopup.querySelector('.popup__caption');
 const popupsList = Array.from(document.querySelectorAll('.popup'));
 const profileEditFormValidator = new FormValidator(validationParameters, profileEditPopupForm);
 const placeAddFormValidator = new FormValidator(validationParameters, placeAddPopupForm);
+const cardList = new Section({items: initialCards, renderer: (item) => {
+  const card = new Card(item, "#element", handleOpenCard);
+  const cardElement = card.generateCard();
+  cardList.addItem(cardElement);
+}}, cardListSelector);
 
 function openPopup(popupElement) {
   popupElement.classList.add('popup_opened');
@@ -114,11 +121,6 @@ function handleSubmitForm(event) {
   closePopup(profileEditPopup);
 }
 
-initialCards.forEach((cardElement) => {
-  const card = new Card(cardElement, "#element", handleOpenCard);
-  cardsContainer.prepend(card.generateCard());
-})
-
 function handleSubmitAddPlaceForm(event) {
   event.preventDefault();
   const cardObject = {};
@@ -130,6 +132,7 @@ function handleSubmitAddPlaceForm(event) {
 }
 
 enableClosePopupListeners();
+cardList.renderItems();
 
 profileEditFormValidator.enableValidation();
 
