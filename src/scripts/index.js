@@ -63,40 +63,23 @@ const placeAddFormValidator = new FormValidator(validationParameters, placeAddPo
 
 const popupWithImage = new PopupWithImage('#element-popup');
 
-const popupWithPlaceForm = new PopupWithForm('#add-place', handleSubmitAddPlaceForm);
-
-const popupWithUserInfoForm = new PopupWithForm('#edit-profile', handleSubmitUserInfoForm);
-
-const cardList = new Section({items: initialCards, renderer: (item) => {
-  const card = new Card(item, "#element", handleOpenCard);
+const popupWithPlaceForm = new PopupWithForm('#add-place', (formInputValues) => {
+  const card = new Card(formInputValues, "#element", (image, title) => { popupWithImage.open(image, title); });
   cardList.addItem(card.generateCard());
-}}, '.elements__list');
+});
 
-const userInfo = new UserInfo({userNameSelector: '.profile__name', userInfoSelector: '.profile__about'});
-
-function openAddPlacePopup() {
-  placeAddFormValidator.clearErrors();
-  popupWithPlaceForm.open();
-}
-
-function openUserInfoPopup() {
-  profileEditFormValidator.clearErrors();
-  popupWithUserInfoForm.open();
-  popupWithUserInfoForm.setDefaultInputValues(userInfo.getUserInfo());
-}
-
-function handleOpenCard(image, title) {
- popupWithImage.open(image, title);
-}
-
-function handleSubmitAddPlaceForm(formInputValues){
-  const card = new Card(formInputValues, "#element", handleOpenCard);
-  cardList.addItem(card.generateCard());
-}
-
-function handleSubmitUserInfoForm(formInputValues) {
+const popupWithUserInfoForm = new PopupWithForm('#edit-profile', (formInputValues) => {
   userInfo.setUserInfo(formInputValues);
-}
+});
+
+const cardList = new Section({
+  items: initialCards, renderer: (item) => {
+    const card = new Card(item, "#element", (image, title) => { popupWithImage.open(image, title); });
+    cardList.addItem(card.generateCard());
+  }
+}, '.elements__list');
+
+const userInfo = new UserInfo({ userNameSelector: '.profile__name', userInfoSelector: '.profile__about' });
 
 popupWithImage.setEventListeners();
 
@@ -110,6 +93,13 @@ profileEditFormValidator.enableValidation();
 
 placeAddFormValidator.enableValidation();
 
-profileEditButton.addEventListener('click', openUserInfoPopup);
+profileEditButton.addEventListener('click', () => {
+  profileEditFormValidator.clearErrors();
+  popupWithUserInfoForm.open();
+  popupWithUserInfoForm.setDefaultInputValues(userInfo.getUserInfo());
+});
 
-placeAddButton.addEventListener('click', openAddPlacePopup);
+placeAddButton.addEventListener('click', () => {
+  placeAddFormValidator.clearErrors();
+  popupWithPlaceForm.open();
+});
