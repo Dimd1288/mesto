@@ -20,7 +20,7 @@ class Card {
         this._getElement();
         this._setEventListeners();
         this._imageElement.src = this._data.link;
-        this._titleElement.textContent = this._data.name;
+        this._titleElement.textContent = this._data.title;
         return this._element;
     }
 
@@ -38,7 +38,7 @@ class Card {
             this._removeCard();
         });
         this._imageElement.addEventListener('click', () => {
-            this._openCard(this._imageElement, this._data.name);
+            this._openCard(this._imageElement, this._data.title);
         })
     }
 }
