@@ -41,8 +41,6 @@ const validationParameters = {
   errorClass: 'popup__error_visible'
 };
 
-const cardsContainer = document.querySelector('.elements__list');
-
 const profileEditButton = document.querySelector('.profile__edit-button');
 
 const profileEditPopup = document.querySelector('#edit-profile');
@@ -71,8 +69,7 @@ const popupWithUserInfoForm = new PopupWithForm('#edit-profile', handleSubmitUse
 
 const cardList = new Section({items: initialCards, renderer: (item) => {
   const card = new Card(item, "#element", handleOpenCard);
-  const cardElement = card.generateCard();
-  cardList.addItem(cardElement);
+  cardList.addItem(card.generateCard());
 }}, '.elements__list');
 
 const userInfo = new UserInfo({userNameSelector: '.profile__name', userInfoSelector: '.profile__about'});
@@ -94,7 +91,7 @@ function handleOpenCard(image, title) {
 
 function handleSubmitAddPlaceForm(formInputValues){
   const card = new Card(formInputValues, "#element", handleOpenCard);
-  cardsContainer.prepend(card.generateCard());
+  cardList.addItem(card.generateCard());
 }
 
 function handleSubmitUserInfoForm(formInputValues) {
