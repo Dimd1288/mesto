@@ -20,6 +20,7 @@ export default class Card {
         this._getElement();
         this._setEventListeners();
         this._imageElement.src = this._data.link;
+        this._imageElement.alt = this._data.title;
         this._titleElement.textContent = this._data.title;
         return this._element;
     }

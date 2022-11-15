@@ -1,10 +1,10 @@
-import Card from "./scripts/Card.js";
-import FormValidator from "./scripts/FormValidator.js";
-import PopupWithForm from "./scripts/PopupWithForm.js";
-import PopupWithImage from "./scripts/PopupWithImage.js";
-import Section from "./scripts/Section.js";
-import UserInfo from "./scripts/UserInfo.js";
-import './pages/index.css';
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import Section from "../components/Section.js";
+import UserInfo from "../components/UserInfo.js";
+import './index.css';
 
 const initialCards = [
   {
@@ -65,22 +65,27 @@ const placeAddFormValidator = new FormValidator(validationParameters, placeAddPo
 const popupWithImage = new PopupWithImage('#element-popup');
 
 const popupWithPlaceForm = new PopupWithForm('#add-place', (formInputValues) => {
-  const card = new Card(formInputValues, "#element", (image, title) => { popupWithImage.open(image, title); });
-  cardList.addItem(card.generateCard());
+  cardList.addItem(createCard(formInputValues));
+  placeAddFormValidator.disableSubmitButton();
 });
 
 const popupWithUserInfoForm = new PopupWithForm('#edit-profile', (formInputValues) => {
   userInfo.setUserInfo(formInputValues);
+  profileEditFormValidator.disableSubmitButton();
 });
 
 const cardList = new Section({
   items: initialCards, renderer: (item) => {
-    const card = new Card(item, "#element", (image, title) => { popupWithImage.open(image, title); });
-    cardList.addItem(card.generateCard());
+    cardList.addItem(createCard(item));
   }
 }, '.elements__list');
 
 const userInfo = new UserInfo({ userNameSelector: '.profile__name', userInfoSelector: '.profile__about' });
+
+function createCard(cardData) {
+  const card = new Card(cardData, "#element", (image, title) => { popupWithImage.open(image, title); });
+  return card.generateCard();
+}
 
 popupWithImage.setEventListeners();
 
