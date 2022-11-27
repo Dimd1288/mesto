@@ -46,6 +46,6 @@ module.exports = {
         }),
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin(),
-        new FaviconsWebpackPlugin('./src/images/profile-photo.jpg')
+        new FaviconsWebpackPlugin('./src/images/element2.jpg')
     ]
 };

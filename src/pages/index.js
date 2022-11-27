@@ -4,31 +4,41 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
+import Api from "../components/Api.js";
 import './index.css';
+
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-55',
+  headers: {
+    authorization: 'd336096d-2d8c-44f4-af75-d1804dff5c64',
+    'Content-Type': 'application/json'
+  }
+}); 
+
 
 const initialCards = [
   {
-    title: 'Архыз',
+    name: 'Архыз',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
   },
   {
-    title: 'Челябинская область',
+    name: 'Челябинская область',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
   },
   {
-    title: 'Иваново',
+    name: 'Иваново',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
   },
   {
-    title: 'Камчатка',
+    name: 'Камчатка',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
   },
   {
-    title: 'Холмогорский район',
+    name: 'Холмогорский район',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
   },
   {
-    title: 'Байкал',
+    name: 'Байкал',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
@@ -65,22 +75,35 @@ const placeAddFormValidator = new FormValidator(validationParameters, placeAddPo
 const popupWithImage = new PopupWithImage('#element-popup');
 
 const popupWithPlaceForm = new PopupWithForm('#add-place', (formInputValues) => {
-  cardList.addItem(createCard(formInputValues));
+  const section = new Section({}, '.elements__list');
+  api.postNewCard(formInputValues);
+  section.addItem(createCard(formInputValues));
   placeAddFormValidator.disableSubmitButton();
 });
 
 const popupWithUserInfoForm = new PopupWithForm('#edit-profile', (formInputValues) => {
-  userInfo.setUserInfo(formInputValues);
+  api.patchUser(formInputValues).then(res => {
+    userInfo.setUserInfo(res);
+  })
   profileEditFormValidator.disableSubmitButton();
 });
 
-const cardList = new Section({
-  items: initialCards, renderer: (item) => {
-    cardList.addItem(createCard(item));
-  }
-}, '.elements__list');
+api.getInitialCards().then(res => {
+  const cardList = new Section({
+    items: res.reverse(), renderer: (item) => {
+      cardList.addItem(createCard(item));
+    }
+  }, '.elements__list');
+  cardList.renderItems();
+})
 
-const userInfo = new UserInfo({ userNameSelector: '.profile__name', userInfoSelector: '.profile__about' });
+
+
+const userInfo = new UserInfo({ userNameSelector: '.profile__name', userInfoSelector: '.profile__about', userAvatarSelector: '.profile__photo'});
+
+api.getUser().then(res => {
+  userInfo.setUserInfo(res);
+});
 
 function createCard(cardData) {
   const card = new Card(cardData, "#element", (image, title) => { popupWithImage.open(image, title); });
@@ -92,8 +115,6 @@ popupWithImage.setEventListeners();
 popupWithPlaceForm.setEventListeners();
 
 popupWithUserInfoForm.setEventListeners();
-
-cardList.renderItems();
 
 profileEditFormValidator.enableValidation();
 

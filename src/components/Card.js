@@ -20,8 +20,8 @@ export default class Card {
         this._getElement();
         this._setEventListeners();
         this._imageElement.src = this._data.link;
-        this._imageElement.alt = this._data.title;
-        this._titleElement.textContent = this._data.title;
+        this._imageElement.alt = this._data.name;
+        this._titleElement.textContent = this._data.name;
         return this._element;
     }
 
@@ -39,7 +39,7 @@ export default class Card {
             this._removeCard();
         });
         this._imageElement.addEventListener('click', () => {
-            this._openCard(this._imageElement, this._data.title);
+            this._openCard(this._imageElement, this._data.name);
         })
     }
 }
