@@ -6,7 +6,7 @@ import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
 import './index.css';
-import Popup from "../components/Popup.js";
+import PopupConfirmDelete from "../components/PopupConfirmDelete.js";
 
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-55',
@@ -14,7 +14,7 @@ const api = new Api({
     authorization: 'd336096d-2d8c-44f4-af75-d1804dff5c64',
     'Content-Type': 'application/json'
   }
-}); 
+});
 
 
 const initialCards = [
@@ -75,7 +75,7 @@ const placeAddFormValidator = new FormValidator(validationParameters, placeAddPo
 
 const popupWithImage = new PopupWithImage('#element-popup');
 
-const popupConfirmImageDelete = new Popup('#delete-place');
+const popupConfirmImageDelete = new PopupConfirmDelete('#delete-place', () => { });
 
 const popupWithPlaceForm = new PopupWithForm('#add-place', (formInputValues) => {
   const section = new Section({}, '.elements__list');
@@ -100,14 +100,18 @@ api.getInitialCards().then(res => {
   cardList.renderItems();
 })
 
-const userInfo = new UserInfo({ userNameSelector: '.profile__name', userInfoSelector: '.profile__about', userAvatarSelector: '.profile__photo'});
+const userInfo = new UserInfo({ userNameSelector: '.profile__name', userInfoSelector: '.profile__about', userAvatarSelector: '.profile__photo' });
 
 api.getUser().then(res => {
   userInfo.setUserInfo(res);
 });
 
 function createCard(cardData) {
-  const card = new Card(cardData, "#element", (image, title) => { popupWithImage.open(image, title); });
+  const card = new Card(cardData, "#element",
+    (image, title) => { popupWithImage.open(image, title); },
+    () => {
+      popupConfirmImageDelete.open();
+    });
   return card.generateCard();
 }
 
@@ -116,6 +120,8 @@ popupWithImage.setEventListeners();
 popupWithPlaceForm.setEventListeners();
 
 popupWithUserInfoForm.setEventListeners();
+
+popupConfirmImageDelete.setEventListeners();
 
 profileEditFormValidator.enableValidation();
 
