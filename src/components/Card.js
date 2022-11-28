@@ -1,5 +1,5 @@
 export default class Card {
-    constructor(data, templateElement, handleCardClick) {
+    constructor(data, templateElement, handleCardClick, handleDeleteCardPopupOpen) {
         this._data = data;
         this._templateElement = templateElement;
         this._openCard = handleCardClick;
@@ -36,7 +36,7 @@ export default class Card {
     _setEventListeners() {
         this._element.querySelector('.element__like').addEventListener('click', this._toggleCardLikeState);
         this._element.querySelector('.element__basket').addEventListener('click', () => {
-            this._removeCard();
+            // this._removeCard();
         });
         this._imageElement.addEventListener('click', () => {
             this._openCard(this._imageElement, this._data.name);

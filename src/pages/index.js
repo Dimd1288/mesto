@@ -6,6 +6,7 @@ import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
 import './index.css';
+import Popup from "../components/Popup.js";
 
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-55',
@@ -74,6 +75,8 @@ const placeAddFormValidator = new FormValidator(validationParameters, placeAddPo
 
 const popupWithImage = new PopupWithImage('#element-popup');
 
+const popupConfirmImageDelete = new Popup('#delete-place');
+
 const popupWithPlaceForm = new PopupWithForm('#add-place', (formInputValues) => {
   const section = new Section({}, '.elements__list');
   api.postNewCard(formInputValues);
@@ -96,8 +99,6 @@ api.getInitialCards().then(res => {
   }, '.elements__list');
   cardList.renderItems();
 })
-
-
 
 const userInfo = new UserInfo({ userNameSelector: '.profile__name', userInfoSelector: '.profile__about', userAvatarSelector: '.profile__photo'});
 
