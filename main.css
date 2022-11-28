@@ -17,8 +17,10 @@
 .element{align-items:center;background-color:#fff;border-radius:10px;display:flex;flex-wrap:wrap;justify-content:space-between;position:relative}
 .element__basket{background:transparent url(ce3b64935accf9b8212e.svg);background-size:cover;border:none;cursor:pointer;height:19px;position:absolute;right:20px;top:20px;transition:opacity .3s;width:18px}.element__basket:hover{opacity:.6}
 .element__image{background-color:#000;border-radius:10px 10px 0 0;cursor:pointer;height:282px;-o-object-fit:cover;object-fit:cover;-o-object-position:0 0;object-position:0 0;width:100%}
-.element__like{background:#fff 50% no-repeat url(e3b9ba5840ebe97bc077.svg);border:0;cursor:pointer;height:19px;margin:0 15px 0 0;transition:opacity .3s;width:22px}.element__like:hover{opacity:.5}
+.element__like-container{margin:0 15px 0 0;width:22px}
+.element__like{background:#fff 50% no-repeat url(e3b9ba5840ebe97bc077.svg);border:0;cursor:pointer;height:19px;transition:opacity .3s;width:22px}.element__like:hover{opacity:.5}
 .element__like_active{background-image:url(ea123e45e87d55e1e68c.svg)}
+.element__like-counter{color:#000;display:block;font-size:13px;line-height:16px;text-align:center}
 .element__title{color:#000;font-size:24px;font-weight:900;line-height:29px;margin:25px 0 31px 21px;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .footer{display:flex;justify-items:flex-start;margin:0 auto;padding:66px 0 60px;width:calc(100% - 400px)}@media screen and (max-width:768px){.footer{padding:48px 0 36px;width:calc(100% - 38px)}}
 .footer__copyright{color:#545454;font-size:18px;line-height:22px;margin:0}@media screen and (max-width:399px){.footer__copyright{font-size:14px;line-height:17px}}
