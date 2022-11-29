@@ -1,7 +1,7 @@
 import { data } from "autoprefixer";
 
 export default class Card {
-    constructor(data, templateElement, handleCardClick, openDeletePopup) {
+    constructor(data, templateElement, handleCardClick, openDeletePopup, getUserId) {
         this._data = data;
         this._templateElement = templateElement;
         this._openCard = handleCardClick;
@@ -9,6 +9,7 @@ export default class Card {
         this._id = data._id;
         this._likes = data.likes;
         this._ownerId = data.owner._id;
+        this._getUserId = getUserId;
     }
 
     _getElement() {
@@ -23,9 +24,12 @@ export default class Card {
         this._likeElement = this._element.querySelector('.element__like');
         this._likesCounterElement = this._element.querySelector('.element__like-counter');
         this._basketElement = this._element.querySelector('.element__basket');
-        if (this._isLiked()) {
-            this._likeElement.classList.add('element__like_active');
-        }
+        this._getUserId.then(res => {
+            if (this._ownerId !== res) {
+                this._basketElement.remove();
+            }
+        })
+        this._toggleLikedDefault();
     }
 
     generateCard() {
@@ -42,10 +46,18 @@ export default class Card {
         event.target.classList.toggle('element__like_active'); 
     }
 
-    _isLiked() {
+    _isLiked(userId) {
         return this._likes.some((item) => {
-            return item._id === this._ownerId;
+            return item._id === userId;
         });
+    }
+
+    _toggleLikedDefault() {
+        this._getUserId.then(res => {
+            if(this._isLiked(res)){
+                this._likeElement.classList.toggle('element__like_active');
+            }
+        })
     }
 
     _removeCard() {

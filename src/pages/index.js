@@ -100,18 +100,21 @@ api.getInitialCards().then(res => {
   cardList.renderItems();
 })
 
-const userInfo = new UserInfo({ userNameSelector: '.profile__name', userInfoSelector: '.profile__about', userAvatarSelector: '.profile__photo' });
-
-api.getUser().then(res => {
-  userInfo.setUserInfo(res);
-});
+const userInfo = new UserInfo({
+  userNameSelector: '.profile__name',
+  userInfoSelector: '.profile__about',
+  userAvatarSelector: '.profile__photo',
+}, api.getUser().then(res => {
+  return userInfo.setUserInfo(res);
+})
+);
 
 function createCard(cardData) {
   const card = new Card(cardData, "#element",
     (image, title) => { popupWithImage.open(image, title); },
     () => {
       popupConfirmImageDelete.open();
-    });
+    }, userInfo.getUserId());
   return card.generateCard();
 }
 
