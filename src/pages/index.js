@@ -16,8 +16,7 @@ const api = new Api({
   }
 });
 
-
-const initialCards = [
+const initialCards2 = [
   {
     name: 'Архыз',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
@@ -53,6 +52,8 @@ const validationParameters = {
   errorClass: 'popup__error_visible'
 };
 
+let userId = '';
+
 const profileEditButton = document.querySelector('.profile__edit-button');
 
 const profileEditPopup = document.querySelector('#edit-profile');
@@ -75,12 +76,13 @@ const placeAddFormValidator = new FormValidator(validationParameters, placeAddPo
 
 const popupWithImage = new PopupWithImage('#element-popup');
 
-const popupConfirmImageDelete = new PopupConfirmDelete('#delete-place', () => { });
+const popupConfirmImageDelete = new PopupConfirmDelete('#delete-place', (id, card) => {
+   api.deleteCard(id).then(card.remove());
+});
 
 const popupWithPlaceForm = new PopupWithForm('#add-place', (formInputValues) => {
   const section = new Section({}, '.elements__list');
-  api.postNewCard(formInputValues);
-  section.addItem(createCard(formInputValues));
+  api.postNewCard(formInputValues).then(res => section.addItem(createCard(res)));
   placeAddFormValidator.disableSubmitButton();
 });
 
@@ -91,30 +93,36 @@ const popupWithUserInfoForm = new PopupWithForm('#edit-profile', (formInputValue
   profileEditFormValidator.disableSubmitButton();
 });
 
-api.getInitialCards().then(res => {
+Promise.all([api.getUser(), api.getInitialCards()])
+  .then(([profileData, initialCards]) => {
+    userInfo.setUserInfo(profileData);
+    userId = profileData._id;
+    createInitialCards(initialCards);
+})
+  .catch(err => console.log(`При получении данных возникла ошибка: ${err}`));
+
+function createInitialCards(cardsData){
   const cardList = new Section({
-    items: res.reverse(), renderer: (item) => {
+    items: cardsData.reverse(), renderer: (item) => {
       cardList.addItem(createCard(item));
     }
   }, '.elements__list');
   cardList.renderItems();
-})
+}  
 
 const userInfo = new UserInfo({
   userNameSelector: '.profile__name',
   userInfoSelector: '.profile__about',
   userAvatarSelector: '.profile__photo',
-}, api.getUser().then(res => {
-  return userInfo.setUserInfo(res);
-})
+}
 );
 
 function createCard(cardData) {
   const card = new Card(cardData, "#element",
     (image, title) => { popupWithImage.open(image, title); },
-    () => {
-      popupConfirmImageDelete.open();
-    }, userInfo.getUserId());
+    (id, element) => {
+      popupConfirmImageDelete.open(id, element);
+    }, userId);
   return card.generateCard();
 }
 

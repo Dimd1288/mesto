@@ -1,7 +1,7 @@
 import { data } from "autoprefixer";
 
 export default class Card {
-    constructor(data, templateElement, handleCardClick, openDeletePopup, getUserId) {
+    constructor(data, templateElement, handleCardClick, openDeletePopup, userId) {
         this._data = data;
         this._templateElement = templateElement;
         this._openCard = handleCardClick;
@@ -9,7 +9,7 @@ export default class Card {
         this._id = data._id;
         this._likes = data.likes;
         this._ownerId = data.owner._id;
-        this._getUserId = getUserId;
+        this._userId = userId;
     }
 
     _getElement() {
@@ -24,11 +24,9 @@ export default class Card {
         this._likeElement = this._element.querySelector('.element__like');
         this._likesCounterElement = this._element.querySelector('.element__like-counter');
         this._basketElement = this._element.querySelector('.element__basket');
-        this._getUserId.then(res => {
-            if (this._ownerId !== res) {
-                this._basketElement.remove();
-            }
-        })
+        if (this._ownerId !== this._userId) {
+            this._basketElement.remove();
+        }
         this._toggleLikedDefault();
     }
 
@@ -43,7 +41,7 @@ export default class Card {
     }
 
     _toggleCardLikeState(event) {
-        event.target.classList.toggle('element__like_active'); 
+        event.target.classList.toggle('element__like_active');
     }
 
     _isLiked(userId) {
@@ -53,11 +51,9 @@ export default class Card {
     }
 
     _toggleLikedDefault() {
-        this._getUserId.then(res => {
-            if(this._isLiked(res)){
-                this._likeElement.classList.toggle('element__like_active');
-            }
-        })
+        if (this._isLiked(this._userId)) {
+            this._likeElement.classList.toggle('element__like_active');
+        }
     }
 
     _removeCard() {
@@ -67,7 +63,7 @@ export default class Card {
     _setEventListeners() {
         this._likeElement.addEventListener('click', this._toggleCardLikeState);
         this._basketElement.addEventListener('click', () => {
-            this._openDeletePopup();
+            this._openDeletePopup(this._id, this._element);
         });
         this._imageElement.addEventListener('click', () => {
             this._openCard(this._imageElement, this._data.name);

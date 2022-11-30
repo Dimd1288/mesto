@@ -85,4 +85,22 @@ export default class Api {
             console.log(`От сервера вернулась ошибка ${err}`)
         });
     }
+
+    deleteCard(cardId) {
+        return fetch(`${this._cardsEndpoint}/${cardId}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: this._authorization
+            }
+        }).then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(res.status)
+        })
+        .catch(err => {
+            console.log(`От сервера вернулась ошибка ${err}`)
+        });
+            
+    }
 }
