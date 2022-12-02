@@ -66,6 +66,14 @@ const placeAddButton = document.querySelector('.profile__add-button');
 
 const placeAddPopup = document.querySelector('#add-place');
 
+const avatarEditButton = document.querySelector('.profile__photo-button')
+
+const avatarUpdatePopup = document.querySelector('#update-avatar');
+
+const avatarUpdatePopupContainer = avatarUpdatePopup.querySelector('.popup__container');
+
+const avatarUpdatePopupForm = avatarUpdatePopupContainer.querySelector('.popup__form');
+
 const placeAddPopupContainer = placeAddPopup.querySelector('.popup__container');
 
 const placeAddPopupForm = placeAddPopupContainer.querySelector('.popup__form');
@@ -73,6 +81,8 @@ const placeAddPopupForm = placeAddPopupContainer.querySelector('.popup__form');
 const profileEditFormValidator = new FormValidator(validationParameters, profileEditPopupForm);
 
 const placeAddFormValidator = new FormValidator(validationParameters, placeAddPopupForm);
+
+const avatarUpdateFormValidator = new FormValidator(validationParameters, avatarUpdatePopupForm);
 
 const popupWithImage = new PopupWithImage('#element-popup');
 
@@ -82,15 +92,28 @@ const popupConfirmImageDelete = new PopupConfirmDelete('#delete-place', (id, car
 
 const popupWithPlaceForm = new PopupWithForm('#add-place', (formInputValues) => {
   const section = new Section({}, '.elements__list');
-  api.postNewCard(formInputValues).then(res => section.addItem(createCard(res)));
-  placeAddFormValidator.disableSubmitButton();
+  api.postNewCard(formInputValues).then(res => section.addItem(createCard(res))).finally(() => {
+    popupWithPlaceForm.renderLoading(false);
+    placeAddFormValidator.disableSubmitButton();
+  });
 });
 
 const popupWithUserInfoForm = new PopupWithForm('#edit-profile', (formInputValues) => {
   api.patchUser(formInputValues).then(res => {
     userInfo.setUserInfo(res);
-  })
-  profileEditFormValidator.disableSubmitButton();
+  }).finally(() => {
+    popupWithUserInfoForm.renderLoading(false);
+    profileEditFormValidator.disableSubmitButton();
+  });
+});
+
+const popupWithAvatarUrlForm = new PopupWithForm('#update-avatar', (formInputValues) => {
+  api.patchAvatar(formInputValues).then(res => {
+    userInfo.setUserInfo(res);
+  }).finally(() => {
+    popupWithAvatarUrlForm.renderLoading(false);
+    avatarUpdateFormValidator.disableSubmitButton();
+  });
 });
 
 Promise.all([api.getUser(), api.getInitialCards()])
@@ -122,18 +145,16 @@ function createCard(cardData) {
     (image, title) => { popupWithImage.open(image, title); },
     (id, element) => {
       popupConfirmImageDelete.open(id, element);
-    }, (cardId) => {
-      api.getCardById(cardId).then(res => {
-        if (!card.isLiked(res.likes)) {
-          api.putLike(res._id).then(res => {
+    }, (data, isLiked) => {
+        if (!isLiked) {
+          api.putLike(data._id).then(res => {
             card.setLikesCount(res.likes.length);
           });
         } else {
-          api.deleteLike(res._id).then(res => {
+          api.deleteLike(data._id).then(res => {
             card.setLikesCount(res.likes.length);
           });
-        }
-      })
+        } 
     }, userId);
   return card.generateCard();
 }
@@ -145,11 +166,15 @@ popupWithPlaceForm.setEventListeners();
 
 popupWithUserInfoForm.setEventListeners();
 
+popupWithAvatarUrlForm.setEventListeners();
+
 popupConfirmImageDelete.setEventListeners();
 
 profileEditFormValidator.enableValidation();
 
 placeAddFormValidator.enableValidation();
+
+avatarUpdateFormValidator.enableValidation();
 
 profileEditButton.addEventListener('click', () => {
   profileEditFormValidator.clearErrors();
@@ -161,3 +186,8 @@ placeAddButton.addEventListener('click', () => {
   placeAddFormValidator.clearErrors();
   popupWithPlaceForm.open();
 });
+
+avatarEditButton.addEventListener('click', () => {
+  avatarUpdateFormValidator.clearErrors();
+  popupWithAvatarUrlForm.open();
+})

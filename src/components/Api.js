@@ -24,28 +24,6 @@ export default class Api {
                 });
     }
 
-    getCardById(cardId) {
-        return fetch(this._cardsEndpoint, {
-            headers: {
-                authorization: this._authorization,
-            }
-        })
-            .then(
-                res => {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                    return Promise.reject(res.status);
-                }).then(res => {
-                    return res.filter(item => {
-                        return item._id === cardId;
-                    })[0]
-                })
-                .catch(err => {
-                    console.log(`Запрос завершен с ошибкой ${err}`)
-                })
-    }
-
     getUser() {
         return fetch(this._userEndpoint, {
             headers: {
@@ -150,6 +128,29 @@ export default class Api {
                 authorization: this._authorization
             }
         }).then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(res.status)
+        })
+            .catch(err => {
+                console.log(`От сервера вернулась ошибка ${err}`)
+            });
+    }
+
+    patchAvatar(avatar) {
+        return fetch(`${this._userEndpoint}/avatar`, {
+            method: 'PATCH', 
+            headers: {
+                authorization: this._authorization,
+                'Content-Type': this._contentType
+            },
+            body: JSON.stringify({
+                avatar: avatar.link
+            })
+            
+        })
+        .then(res => {
             if (res.ok) {
                 return res.json();
             }

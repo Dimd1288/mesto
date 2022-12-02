@@ -17,6 +17,7 @@
             <section class="profile">
                 <div class="profile__wrapper">
                     <img src="<%=require('./images/profile-photo.jpg')%>" alt="Фото профиля" class="profile__photo">
+                    <button type="button" class="profile__photo-button"></button>
                     <div class="profile__info">
                         <h1 class="profile__name"></h1>
                         <button type="button" class="profile__edit-button"></button>
@@ -97,6 +98,20 @@
             <button type="button" class="popup__close-icon"></button>
             <h2 class="popup__title">Вы уверены?</h2>
             <button type="submit" class="popup__save-button">Да</button>
+        </div>
+    </div>
+    <div class="popup" id="update-avatar">
+        <div class="popup__container">
+            <button type="button" class="popup__close-icon"></button>
+            <h2 class="popup__title">Обновить аватар</h2>
+            <form name="update-avatar-form" action="hhtps://server.serve" method="post" class="popup__form" novalidate>
+                <div class="popup__input-container">
+                    <input type="url" name="link" placeholder="Ссылка на картинку" class="popup__input" id="link-input"
+                        required>
+                    <span class="popup__error link-input-error"></span>
+                </div>
+                <button type="submit" class="popup__save-button">Сохранить</button>
+            </form>
         </div>
     </div>
 </body>

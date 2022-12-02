@@ -1,0 +1,26 @@
+.profile__photo-button {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 50%;
+    right: 0;
+    height: 120px;
+    width: 120px;
+    opacity: 0;
+    transition: .3s ease;
+    border: 0;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.8) url(../../../images/edit-icon.svg) no-repeat center;
+}
+
+.profile__photo-button:hover {
+    opacity: 1;
+}
+
+@media screen and (max-width: 768px) {
+    .profile__photo-button {
+        margin: 0 auto;
+    }
+}

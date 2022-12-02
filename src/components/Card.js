@@ -11,6 +11,7 @@ export default class Card {
         this._ownerId = data.owner._id;
         this._userId = userId;
         this._handleFetchLike = handleFetchLike;
+        this._liked = this._isLiked(this._likes);
     }
 
     _getElement() {
@@ -49,7 +50,7 @@ export default class Card {
         event.target.classList.toggle('element__like_active');
     }
 
-    isLiked(likes) {
+   _isLiked(likes) {
         return likes.some((item) => {
             return item._id === this._userId;
         });
@@ -60,7 +61,7 @@ export default class Card {
     }
 
     _toggleLikedDefault() {
-        if (this.isLiked(this._likes)) {
+        if (this._isLiked(this._likes)) {
             this._likeElement.classList.toggle('element__like_active');
         }
     }
@@ -72,7 +73,8 @@ export default class Card {
     _setEventListeners() {
         this._likeElement.addEventListener('click', (evt) => {
             this._toggleCardLikeState(evt)
-            this._handleFetchLike(this._id);
+            this._handleFetchLike(this._data, this._liked);
+            this._liked = !this._liked;
         });
         if(this._isOwnedByUser()) {
             this._basketElement.addEventListener('click', () => {
