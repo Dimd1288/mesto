@@ -18,10 +18,32 @@ export default class Api {
                     if (res.ok) {
                         return res.json();
                     }
-                    return Promise.reject(res.status)
+                    return Promise.reject(res.status);
                 }).catch(err => {
                     console.log(`От сервера вернулась ошибка ${err}`)
                 });
+    }
+
+    getCardById(cardId) {
+        return fetch(this._cardsEndpoint, {
+            headers: {
+                authorization: this._authorization,
+            }
+        })
+            .then(
+                res => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    return Promise.reject(res.status);
+                }).then(res => {
+                    return res.filter(item => {
+                        return item._id === cardId;
+                    })[0]
+                })
+                .catch(err => {
+                    console.log(`Запрос завершен с ошибкой ${err}`)
+                })
     }
 
     getUser() {
@@ -30,15 +52,15 @@ export default class Api {
                 authorization: this._authorization,
             }
         })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(res.status)
-        })
-        .catch(err => {
-            console.log(`От сервера вернулась ошибка ${err}`)
-        });
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(res.status)
+            })
+            .catch(err => {
+                console.log(`От сервера вернулась ошибка ${err}`)
+            });
     }
 
     patchUser(userData) {
@@ -58,9 +80,9 @@ export default class Api {
             }
             return Promise.reject(res.status)
         })
-        .catch(err => {
-            console.log(`От сервера вернулась ошибка ${err}`)
-        });
+            .catch(err => {
+                console.log(`От сервера вернулась ошибка ${err}`)
+            });
     }
 
     postNewCard(cardData) {
@@ -75,15 +97,15 @@ export default class Api {
                 link: cardData.link
             })
         })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(res.status)
-        })
-        .catch(err => {
-            console.log(`От сервера вернулась ошибка ${err}`)
-        });
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(res.status)
+            })
+            .catch(err => {
+                console.log(`От сервера вернулась ошибка ${err}`)
+            });
     }
 
     deleteCard(cardId) {
@@ -98,9 +120,43 @@ export default class Api {
             }
             return Promise.reject(res.status)
         })
-        .catch(err => {
-            console.log(`От сервера вернулась ошибка ${err}`)
-        });
-            
+            .catch(err => {
+                console.log(`От сервера вернулась ошибка ${err}`)
+            });
+
+    }
+
+    putLike(cardId) {
+        return fetch(`${this._cardsEndpoint}/${cardId}/likes`, {
+            method: 'PUT',
+            headers: {
+                authorization: this._authorization
+            }
+        }).then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(res.status)
+        })
+            .catch(err => {
+                console.log(`От сервера вернулась ошибка ${err}`)
+            });
+    }
+
+    deleteLike(cardId) {
+        return fetch(`${this._cardsEndpoint}/${cardId}/likes`, {
+            method: 'DELETE',
+            headers: {
+                authorization: this._authorization
+            }
+        }).then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(res.status)
+        })
+            .catch(err => {
+                console.log(`От сервера вернулась ошибка ${err}`)
+            });
     }
 }

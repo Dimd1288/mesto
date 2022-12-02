@@ -77,7 +77,7 @@ const placeAddFormValidator = new FormValidator(validationParameters, placeAddPo
 const popupWithImage = new PopupWithImage('#element-popup');
 
 const popupConfirmImageDelete = new PopupConfirmDelete('#delete-place', (id, card) => {
-   api.deleteCard(id).then(card.remove());
+  api.deleteCard(id).then(card.remove());
 });
 
 const popupWithPlaceForm = new PopupWithForm('#add-place', (formInputValues) => {
@@ -98,17 +98,17 @@ Promise.all([api.getUser(), api.getInitialCards()])
     userInfo.setUserInfo(profileData);
     userId = profileData._id;
     createInitialCards(initialCards);
-})
+  })
   .catch(err => console.log(`При получении данных возникла ошибка: ${err}`));
 
-function createInitialCards(cardsData){
+function createInitialCards(cardsData) {
   const cardList = new Section({
     items: cardsData.reverse(), renderer: (item) => {
       cardList.addItem(createCard(item));
     }
   }, '.elements__list');
   cardList.renderItems();
-}  
+}
 
 const userInfo = new UserInfo({
   userNameSelector: '.profile__name',
@@ -122,9 +122,22 @@ function createCard(cardData) {
     (image, title) => { popupWithImage.open(image, title); },
     (id, element) => {
       popupConfirmImageDelete.open(id, element);
+    }, (cardId) => {
+      api.getCardById(cardId).then(res => {
+        if (!card.isLiked(res.likes)) {
+          api.putLike(res._id).then(res => {
+            card.setLikesCount(res.likes.length);
+          });
+        } else {
+          api.deleteLike(res._id).then(res => {
+            card.setLikesCount(res.likes.length);
+          });
+        }
+      })
     }, userId);
   return card.generateCard();
 }
+
 
 popupWithImage.setEventListeners();
 
