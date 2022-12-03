@@ -146,7 +146,7 @@ export default class Api {
                 'Content-Type': this._contentType
             },
             body: JSON.stringify({
-                avatar: avatar.link
+                avatar: avatar.avatar
             })
             
         })
