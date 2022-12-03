@@ -13,15 +13,7 @@ export default class Api {
                 authorization: this._authorization,
             }
         })
-            .then(
-                res => {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                    return Promise.reject(res.status);
-                }).catch(err => {
-                    console.log(`От сервера вернулась ошибка ${err}`)
-                });
+            .then(this._checkResponse);
     }
 
     getUser() {
@@ -30,15 +22,7 @@ export default class Api {
                 authorization: this._authorization,
             }
         })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(res.status)
-            })
-            .catch(err => {
-                console.log(`От сервера вернулась ошибка ${err}`)
-            });
+            .then(this._checkResponse);
     }
 
     patchUser(userData) {
@@ -52,15 +36,7 @@ export default class Api {
                 name: userData.name,
                 about: userData.about
             })
-        }).then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(res.status)
-        })
-            .catch(err => {
-                console.log(`От сервера вернулась ошибка ${err}`)
-            });
+        }).then(this._checkResponse);
     }
 
     postNewCard(cardData) {
@@ -75,15 +51,7 @@ export default class Api {
                 link: cardData.link
             })
         })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(res.status)
-            })
-            .catch(err => {
-                console.log(`От сервера вернулась ошибка ${err}`)
-            });
+            .then(this._checkResponse);
     }
 
     deleteCard(cardId) {
@@ -92,15 +60,7 @@ export default class Api {
             headers: {
                 authorization: this._authorization
             }
-        }).then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(res.status)
-        })
-            .catch(err => {
-                console.log(`От сервера вернулась ошибка ${err}`)
-            });
+        }).then(this._checkResponse);
 
     }
 
@@ -110,15 +70,7 @@ export default class Api {
             headers: {
                 authorization: this._authorization
             }
-        }).then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(res.status)
-        })
-            .catch(err => {
-                console.log(`От сервера вернулась ошибка ${err}`)
-            });
+        }).then(this._checkResponse);
     }
 
     deleteLike(cardId) {
@@ -127,15 +79,7 @@ export default class Api {
             headers: {
                 authorization: this._authorization
             }
-        }).then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(res.status)
-        })
-            .catch(err => {
-                console.log(`От сервера вернулась ошибка ${err}`)
-            });
+        }).then(this._checkResponse);
     }
 
     patchAvatar(avatar) {
@@ -150,14 +94,13 @@ export default class Api {
             })
             
         })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(res.status)
-        })
-            .catch(err => {
-                console.log(`От сервера вернулась ошибка ${err}`)
-            });
+        .then(this._checkResponse);
+    }
+
+    _checkResponse(res) {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(res.status)
     }
 }

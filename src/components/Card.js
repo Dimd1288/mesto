@@ -72,9 +72,13 @@ export default class Card {
 
     _setEventListeners() {
         this._likeElement.addEventListener('click', (evt) => {
-            this._toggleCardLikeState(evt)
-            this._handleFetchLike(this._id, this._liked);
-            this._liked = !this._liked;
+            this._handleFetchLike(this._id, this._liked)
+            .then((res) => {
+                this.setLikesCount(res.likes.length);
+                this._toggleCardLikeState(evt);
+                this._liked = !this._liked;
+            })
+            .catch(err => console.log(`От сервера вернулась ошибка ${err}`));
         });
         if(this._isOwnedByUser()) {
             this._basketElement.addEventListener('click', () => {

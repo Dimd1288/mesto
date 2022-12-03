@@ -7,6 +7,7 @@ import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
 import './index.css';
 import PopupConfirmDelete from "../components/PopupConfirmDelete.js";
+import { validationParameters } from "../utils/constants.js";
 
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-55',
@@ -15,15 +16,6 @@ const api = new Api({
     'Content-Type': 'application/json'
   }
 });
-
-const validationParameters = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__save-button',
-  inactiveButtonClass: 'popup__save-button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-};
 
 let userId = '';
 
@@ -60,51 +52,55 @@ const avatarUpdateFormValidator = new FormValidator(validationParameters, avatar
 const popupWithImage = new PopupWithImage('#element-popup');
 
 const popupConfirmImageDelete = new PopupConfirmDelete('#delete-place', (id, card) => {
-  api.deleteCard(id).then(card.remove());
+  api.deleteCard(id)
+    .then(card.remove())
+    .catch(err => console.log(`От сервера вернулась ошибка ${err}`));
 });
 
 const popupWithPlaceForm = new PopupWithForm('#add-place', (formInputValues) => {
-  const section = new Section({}, '.elements__list');
-  api.postNewCard(formInputValues).then(res => section.addItem(createCard(res))).finally(() => {
-    popupWithPlaceForm.renderLoading(false);
-    placeAddFormValidator.disableSubmitButton();
-  });
+  return api.postNewCard(formInputValues)
+    .then(res => cardList.addItem(createCard(res)))
+    .catch(err => console.log(`От сервера вернулась ошибка ${err}`))
+    .finally(() => {
+      placeAddFormValidator.disableSubmitButton();
+    });
 });
 
 const popupWithUserInfoForm = new PopupWithForm('#edit-profile', (formInputValues) => {
-  api.patchUser(formInputValues).then(res => {
-    userInfo.setUserInfo(res);
-  }).finally(() => {
-    popupWithUserInfoForm.renderLoading(false);
-    profileEditFormValidator.disableSubmitButton();
-  });
+  return api.patchUser(formInputValues)
+    .then(res => {
+      userInfo.setUserInfo(res);
+    })
+    .catch(err => console.log(`От сервера вернулась ошибка: ${err}`))
+    .finally(() => {
+      profileEditFormValidator.disableSubmitButton();
+    });
 });
 
 const popupWithAvatarUrlForm = new PopupWithForm('#update-avatar', (formInputValues) => {
-  api.patchAvatar(formInputValues).then(res => {
+  return api.patchAvatar(formInputValues).then(res => {
     userInfo.setUserInfo(res);
-  }).finally(() => {
-    popupWithAvatarUrlForm.renderLoading(false);
-    avatarUpdateFormValidator.disableSubmitButton();
-  });
+  })
+    .catch(err => console.log(`От сервера вернулась ошибка: ${err}`))
+    .finally(() => {
+      avatarUpdateFormValidator.disableSubmitButton();
+    });
 });
 
 Promise.all([api.getUser(), api.getInitialCards()])
   .then(([profileData, initialCards]) => {
     userInfo.setUserInfo(profileData);
     userId = profileData._id;
-    createInitialCards(initialCards);
+    cardList.renderItems(initialCards.reverse());
   })
   .catch(err => console.log(`При получении данных возникла ошибка: ${err}`));
 
-function createInitialCards(cardsData) {
-  const cardList = new Section({
-    items: cardsData.reverse(), renderer: (item) => {
-      cardList.addItem(createCard(item));
-    }
-  }, '.elements__list');
-  cardList.renderItems();
-}
+const cardList = new Section({
+  renderer: (item) => {
+    cardList.addItem(createCard(item));
+  }
+}, '.elements__list');
+
 
 const userInfo = new UserInfo({
   userNameSelector: '.profile__name',
@@ -119,19 +115,14 @@ function createCard(cardData) {
     (id, element) => {
       popupConfirmImageDelete.open(id, element);
     }, (cardId, isLiked) => {
-        if (!isLiked) {
-          api.putLike(cardId).then(res => {
-            card.setLikesCount(res.likes.length);
-          });
-        } else {
-          api.deleteLike(cardId).then(res => {
-            card.setLikesCount(res.likes.length);
-          });
-        } 
+      if (!isLiked) {
+        return api.putLike(cardId);
+      } else {
+        return api.deleteLike(cardId);
+      }
     }, userId);
   return card.generateCard();
 }
-
 
 popupWithImage.setEventListeners();
 
