@@ -145,13 +145,13 @@ function createCard(cardData) {
     (image, title) => { popupWithImage.open(image, title); },
     (id, element) => {
       popupConfirmImageDelete.open(id, element);
-    }, (data, isLiked) => {
+    }, (cardId, isLiked) => {
         if (!isLiked) {
-          api.putLike(data._id).then(res => {
+          api.putLike(cardId).then(res => {
             card.setLikesCount(res.likes.length);
           });
         } else {
-          api.deleteLike(data._id).then(res => {
+          api.deleteLike(cardId).then(res => {
             card.setLikesCount(res.likes.length);
           });
         } 

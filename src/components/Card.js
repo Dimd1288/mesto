@@ -73,7 +73,7 @@ export default class Card {
     _setEventListeners() {
         this._likeElement.addEventListener('click', (evt) => {
             this._toggleCardLikeState(evt)
-            this._handleFetchLike(this._data, this._liked);
+            this._handleFetchLike(this._id, this._liked);
             this._liked = !this._liked;
         });
         if(this._isOwnedByUser()) {
