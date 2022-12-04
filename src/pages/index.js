@@ -52,7 +52,7 @@ const avatarUpdateFormValidator = new FormValidator(validationParameters, avatar
 const popupWithImage = new PopupWithImage('#element-popup');
 
 const popupConfirmImageDelete = new PopupConfirmDelete('#delete-place', (id, card) => {
-  api.deleteCard(id)
+  return api.deleteCard(id)
     .then(card.remove())
     .catch(err => console.log(`От сервера вернулась ошибка ${err}`));
 });
